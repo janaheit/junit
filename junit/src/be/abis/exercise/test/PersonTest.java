@@ -1,6 +1,7 @@
 package be.abis.exercise.test;
 
 import be.abis.exercise.exception.PersonShouldBeAdultException;
+import be.abis.exercise.exception.SalaryTooLowException;
 import be.abis.exercise.model.Company;
 import be.abis.exercise.model.Person;
 import org.junit.jupiter.api.*;
@@ -53,13 +54,25 @@ public class PersonTest {
 
     @Test
     @Order(4)
-    public void calculateNetSalaryOfBelgianPersonUsingMockCompany(){
+    public void calculateNetSalaryOfBelgianPersonUsingMockCompany() throws SalaryTooLowException {
         when(mockCompany.calculateTaxToPay()).thenReturn(51.0);
 
         person2.setCompany(mockCompany);
         person2.setGrossSalary(3500.0);
 
         assertEquals(1715.0, person2.calculateNetSalary());
+        verify(mockCompany).calculateTaxToPay();
+    }
+
+    @Test
+    @Order(5)
+    public void throwExceptionWhenLowSalary() {
+        when(mockCompany.calculateTaxToPay()).thenReturn(51.0);
+
+        person2.setCompany(mockCompany);
+        person2.setGrossSalary(2500.0);
+
+        assertThrows(SalaryTooLowException.class, () -> person2.calculateNetSalary());
         verify(mockCompany).calculateTaxToPay();
     }
 }

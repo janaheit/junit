@@ -4,21 +4,29 @@ import be.abis.exercise.model.Address;
 import be.abis.exercise.model.Company;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class CompanyTest {
     private Company belgian;
 
     @BeforeEach
     void setUp(){
-        Address belgianAddress = new Address("Rue de Bourgogne", "99", "1190", "Bruxelles", "Belgique", "BE");
-        belgian = new Company("Janas company", belgianAddress);
-
     }
+
+    @Mock
+    private Address mockAddress;
 
     @Test
     public void taxForBelgianCompanyShouldBe51(){
+        when(mockAddress.getCountryCode()).thenReturn("BE");
+        belgian = new Company("Janas company", mockAddress);
         assertEquals(51.0, belgian.calculateTaxToPay());
     }
 

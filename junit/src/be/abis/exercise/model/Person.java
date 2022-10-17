@@ -1,6 +1,7 @@
 package be.abis.exercise.model;
 
 import be.abis.exercise.exception.PersonShouldBeAdultException;
+import be.abis.exercise.exception.SalaryTooLowException;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -33,10 +34,12 @@ public class Person implements Comparable<Person>{
 	}
 
 	// business methods
-	public double calculateNetSalary(){
+	public double calculateNetSalary() throws SalaryTooLowException {
 		double tax = company.calculateTaxToPay();
 
-		return grossSalary*(1-tax/100);
+		double net = grossSalary*(1-tax/100);
+		if (net<1500) throw new SalaryTooLowException("The salary is too low.");
+		return net;
 	}
 
 	// getters and setters

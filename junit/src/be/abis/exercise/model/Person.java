@@ -13,6 +13,7 @@ public class Person implements Comparable<Person>{
 	private String lastName;
 	private LocalDate birthDate;
 	private Company company;
+	private double grossSalary;
 	
 	public Person(int personNumber, String firstName, String lastName, LocalDate birthDay) {
 		this.personNumber = personNumber;
@@ -24,6 +25,29 @@ public class Person implements Comparable<Person>{
 	public Person(int personNumber, String firstName, String lastName, LocalDate birthDate, Company company) {
 		this(personNumber,firstName,lastName,birthDate);
 		this.company = company;
+	}
+
+	public Person(int personNumber, String firstName, String lastName, LocalDate birthDate, Company company, double grossSalary) {
+		this(personNumber,firstName,lastName,birthDate, company);
+		this.grossSalary = grossSalary;
+	}
+
+	// business methods
+	public double calculateNetSalary(){
+		double tax = company.calculateTaxToPay();
+
+		return grossSalary*(1-tax/100);
+	}
+
+	// getters and setters
+
+
+	public double getGrossSalary() {
+		return grossSalary;
+	}
+
+	public void setGrossSalary(double grossSalary) {
+		this.grossSalary = grossSalary;
 	}
 
 	public int getPersonNumber() {

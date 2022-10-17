@@ -1,5 +1,8 @@
 package be.abis.exercise.model;
 
+import java.io.*;
+import java.util.regex.Pattern;
+
 public class Address {
 	
 	private String street;
@@ -17,6 +20,17 @@ public class Address {
 		this.country = country;
 		this.countryCode = countryCode;
 	}
+
+	// business methods
+	public Boolean isBelgianZipCodeNumeric(){
+		Pattern pattern = Pattern.compile("-?\\d+(\\.\\d+)?");
+
+		if (zipCode == null) return false;
+
+		return pattern.matcher(zipCode).matches();
+	}
+
+	// getters and setters
 
 	public String getStreet() {
 		return street;
@@ -66,4 +80,22 @@ public class Address {
 		this.countryCode = countryCode;
 	}
 
+	public void writeToFile() throws IOException {
+		PrintWriter pw = new PrintWriter(new FileWriter("/temp/javacourses/address.txt", true));
+
+		StringBuilder addressString = new StringBuilder();
+
+		addressString.append(street);
+		addressString.append(" ");
+		addressString.append(nr);
+		addressString.append(", ");
+		addressString.append(zipCode);
+		addressString.append(" ");
+		addressString.append(town);
+		addressString.append(", ");
+		addressString.append(country);
+
+		pw.println(addressString);
+		pw.close();
+	}
 }
